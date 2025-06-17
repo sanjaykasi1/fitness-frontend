@@ -1,0 +1,7 @@
+services:
+  frontend:
+    build: ./fitness-frontend
+    ports:
+      - "80:80"
+ 
+ 

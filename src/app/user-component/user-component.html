@@ -1,0 +1,177 @@
+<hr>
+<h2>User Page</h2>
+<div *ngIf="loginBool">
+<form (ngSubmit)="login()">
+    <input type="hidden" name="id">
+    <label for = "userName" >Username:</label><br>
+    <input [(ngModel)] = "existUser.userName" type="text" name = "userName" >
+    <br><br>
+    <label for = "email" >Email:</label><br>
+    <input [(ngModel)] = "existUser.email" type="text" name = "email" >
+    <br><br>
+    <label for = "password" >Password:</label><br>
+    <input [(ngModel)] = "existUser.password" type="password" name = "password" >
+
+    <br><br>
+    <button type="submit">Login</button>
+    &nbsp;
+    <button (click)="register()">Register</button>
+</form>
+</div>
+
+
+<div *ngIf="registerBool">
+    <form (ngSubmit)="registerUser()">
+    <hr>
+    <h2>New User Registration</h2>
+    <input type="hidden" name="id">
+    <label for = "userName" >Username:</label><br>
+    <input [(ngModel)] = "newUser.userName" type="text" name = "userName" >
+    <br><br>
+    <label for = "email" >Email:</label><br>
+    <input [(ngModel)] = "newUser.email" type="text" name = "email" >
+    <br><br>
+    <label for = "password" >Password:</label><br>
+    <input [(ngModel)] = "newUser.password" type="password" name = "password" >
+    <br><br><br>
+
+    <label for = "profile.age" >Age:</label><br>
+    <input [(ngModel)] = "newUser.profile.age" type="number" name = "profile.age" >
+    <br><br>
+    <label for = "profile.height" >Height:</label><br>
+    <input [(ngModel)] = "newUser.profile.height" type="number" name = "profile.height" >
+    <br><br>
+    <label for = "profile.weight" >Weight:</label><br>
+    <input [(ngModel)] = "newUser.profile.weight" type="number" name = "profile.weight" >
+    <br><br>
+
+
+
+    <button type="submit">Add User</button>
+    <br><br>
+</form>
+</div>
+
+
+<div *ngIf="dashboard">
+    <hr>
+    <h2>Dashboard:</h2>
+    <h4>View Profile By ID:</h4>
+    <input [(ngModel)]="profileId" name="profileId" placeholder="profileId" required><br>
+    <button (click)="getProfileById(profileId)" name="button1">Submit</button>
+    <div *ngIf="viewProfile">
+        <p><strong>ID:</strong>{{viewProfile.id}}</p>
+        <p><strong>Age:</strong>{{viewProfile.age}}</p>
+        <p><strong>Height: </strong>{{viewProfile.height}}</p>
+        <p><strong>Weight: </strong>{{viewProfile.weight}}</p>
+    </div>
+    <br><br>
+    <button (click)="goToPostActivity()">Post Activity</button> &nbsp;
+    <button (click)="getActivity()">Get Activity</button> &nbsp;
+    <br>
+    <br>
+    <button (click)="postGoals()">Post Goals</button>  &nbsp;
+    <button (click)="getGoals()">Get Goals</button> 
+
+    <div *ngIf="postActivityBool">
+        <hr>
+        <h4>Add Acitivity</h4>
+        <form (ngSubmit)="postActivity()">
+            <input type="hidden" name="id">
+            <label for = "userId" >User Id:</label><br>
+            <input [(ngModel)] = "existActivity.userId" type="number" name = "userId" >
+            <br><br>
+            <label for = "distance" >Distance:</label><br>
+            <input [(ngModel)] = "existActivity.distance" type="number" name = "distance" >
+            <br><br>
+            <label for = "steps" >Steps:</label><br>
+            <input [(ngModel)] = "existActivity.steps" type="number" name = "steps" >
+            <br><br>
+            <label for = "caloriesBurned" >Calories Burned:</label><br>
+            <input [(ngModel)] = "existActivity.caloriesBurned" type="number" name = "caloriesBurned" >
+            <br><br><br>   
+            <button type="submit">Save</button>   
+            <br> <br>  
+            </form>
+    </div>
+
+
+    <div *ngIf="getActivityBool">
+        <hr>
+        <h4>Activity List of User</h4>
+        <input [(ngModel)]="userId" name="userId" placeholder="userId" required><br>
+        <br>
+        <button (click)="getActivityByUserId(userId)">Submit</button>
+        <br> <br>
+        <table border="2" name="viewacitivity">
+            <thead>
+               <tr>
+                <th>ID</th><th>User Id</th><th>Steps</th><th>Distance</th><th>Calories Burned</th>
+            </tr>
+            </thead>
+            
+            <tbody>
+            <tr *ngFor="let act of activities">
+               <td>{{act.id}}</td>
+                <td>{{act.userId}}</td>
+                <td>{{act.steps}}</td>
+                <td>{{act.distance}}</td>
+                <td>{{act.caloriesBurned}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div *ngIf="postGoalsBool">
+        <hr>
+        <h4>Add Goal</h4>
+        <label>Enter Id:</label><br>
+        <input [(ngModel)]="userId" name="userId" placeholder="userId" required><br>
+        <form (ngSubmit)="postGoal(userId)">
+            <input type="hidden" name="id"><br>
+            <label for = "targetCalories" >Target Calories:</label><br>
+            <input [(ngModel)] = "existGoal.targetCalories" type="number" name = "targetCalories" >
+            <br><br>
+            <label for = "distance" >Target Steps:</label><br>
+            <input [(ngModel)] = "existGoal.targetSteps" type="number" name = "distance" >
+            <br><br>
+            <label for = "activity">Activity:</label>
+            <select [(ngModel)] = "existGoal.activity"  name="activity" required >
+                <option *ngFor ="let activity of activities" (ngValue) = "activity">
+                    {{activity.id}}
+                </option>
+            </select>
+            <br><br>
+            <button type="submit">Save</button>   
+            <br> 
+            </form>
+    </div>
+
+
+    <div *ngIf="getGoalsBool">
+        <hr>
+        <h4>Goal List Of User </h4>
+        <input [(ngModel)]="userId" name="userId" placeholder="userId" required><br>
+        <br>
+        <button (click)="viewGoal(userId)">Submit</button>
+        <br> <br>
+        <table border="2" name="viewgoals">
+            <thead>
+               <tr>
+                <th>ID</th><th>target Steps</th><th>Target Calories</th><th>Activity</th>
+            </tr>
+            </thead>
+            
+            <tbody>
+            <tr *ngFor="let goal of goals">
+               <td>{{goal.id}}</td>
+                <td>{{goal.targetSteps}}</td>
+                <td>{{goal.targetCalories}}</td>
+                <td>{{goal.activity | json}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+</div>
